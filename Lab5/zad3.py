@@ -10,7 +10,7 @@ def Hanoirec(n,sour,dest,buff):
     moves += Hanoirec(n-1,buff,dest,sour)
     return moves
 
-def Hanoiite(n, sour, dest, buff):
+def Hanoiite1(n, sour, dest, buff):
     i = 1
     while (sour != [] or buff != []):
         if i % 3 == 1:
@@ -28,6 +28,54 @@ def Hanoiite(n, sour, dest, buff):
                 sour.append(dest.pop())
                 print("Move disk from dest to sour")
         elif i % 3 == 2:
+            #Possible move disk between sour and buff
+            if len(sour)==0:
+                sour.append(buff.pop())
+                print("Move disk from buff to sour")
+            elif len(buff)==0:
+                buff.append(sour.pop())
+                print("Move disk from sour to buff")
+            elif sour[-1] < buff[-1]:
+                buff.append(sour.pop())
+                print("Move disk from sour to buff")
+            else:
+                sour.append(buff.pop())
+                print("Move disk from buff to sour")
+        elif i % 3 == 0:
+            #Possible move disk between buff and dest
+            if len(buff)==0:
+                buff.append(dest.pop())
+                print("Move disk from dest to buff")
+            elif len(dest)==0:
+                dest.append(buff.pop())
+                print("Move disk from buff to dest")
+            elif buff[-1] < dest[-1]:
+                dest.append(buff.pop())
+                print("Move disk from buff to dest")
+            else:
+                buff.append(dest.pop())
+                print("Move disk from dest to buff")
+        i += 1
+    print("Number of moves: ", i-1)
+
+def Hanoiite2(n, sour, dest, buff):
+    i = 1
+    while (sour != [] or buff != []):
+        if i % 3 == 2:
+            #Possible move disk between sour and dest
+            if len(sour)==0:
+                sour.append(dest.pop())
+                print("Move disk from dest to sour")
+            elif len(dest)==0:
+                dest.append(sour.pop())
+                print("Move disk from sour to dest")
+            elif sour[-1] < dest[-1]:
+                dest.append(sour.pop())
+                print("Move disk from sour to dest")
+            else:
+                sour.append(dest.pop())
+                print("Move disk from dest to sour")
+        elif i % 3 == 1:
             #Possible move disk between sour and buff
             if len(sour)==0:
                 sour.append(buff.pop())
@@ -82,7 +130,10 @@ def main():
     print("Time elapsed for recursive algorithm: ", finishrec-1, "seconds")
 
     startite = time.time()
-    Hanoiite(n, sourite, destite, buffite)
+    if n%2==0:
+        Hanoiite2(n, sourite, destite, buffite)
+    else:
+        Hanoiite1(n, sourite, destite, buffite)
     time.sleep(1)
     endite = time.time()
     finishite = endite - startite
